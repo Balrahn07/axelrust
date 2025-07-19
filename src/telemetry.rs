@@ -1,10 +1,10 @@
-use tracing_subscriber::FmtSubscriber;
+use tracing_subscriber::{FmtSubscriber, EnvFilter};
 
 /// Initializes the global subscriber for structured logging.
 /// Log level is controlled via `LOG_LEVEL` environment variable.
-pub fn init() {
+pub fn init_with_level(level: &str) {
     let subscriber = FmtSubscriber::builder()
-        .with_env_filter(std::env::var("LOG_LEVEL").unwrap_or_else(|_| "info".into()))
+        .with_env_filter(EnvFilter::new(level))
         .finish();
 
     tracing::subscriber::set_global_default(subscriber)

@@ -7,10 +7,9 @@ use anyhow::Result;
 async fn main() -> Result<()> {
     // Load .env file
     dotenvy::dotenv().ok();
-    // Start logging
-    telemetry::init();
-
     let cfg = config::load_config()?;
+    // Start logging
+    telemetry::init_with_level(&cfg.log_level);
 
     tracing::info!("AxelRust is running 🚀 (env: {})", cfg.environment);
 
