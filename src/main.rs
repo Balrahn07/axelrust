@@ -1,9 +1,11 @@
 mod config;
 mod telemetry;
+mod worker;
 mod jobs;
 
 use anyhow::Result;
 use jobs::{say_hello::SayHelloJob, Job, JobContext};
+use worker::JobRunner;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -14,17 +16,26 @@ async fn main() -> Result<()> {
 
     tracing::info!("AxelRust is running 🚀 (env: {})", cfg.environment);
 
-    // Simulate a job execution
-    let job = SayHelloJob {
+    let job1 = SayHelloJob {
         message: "This is the first job in AxelRust!".into(),
     };
 
-    let ctx = JobContext {
-        job_id: "job-001".into(),
-        attempt: 1,
+    let job2 = SayHelloJob {
+        message: "Another task for the queue!".into(),
     };
 
-    job.run(ctx).await?;
+    let jobs = vec![
+        (Box::new(job1) as Box<dyn Job>, JobContext {
+            job_id: "job-001".into(),
+            attempt: 1,
+        }),
+        (Box::new(job2) as Box<dyn Job>, JobContext {
+            job_id: "job-002".into(),
+            attempt: 1,
+        }),
+    ];
+
+    JobRunner::run_jobs(jobs).await?;
 
     Ok(())
 }
