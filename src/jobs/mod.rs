@@ -1,7 +1,8 @@
 pub mod say_hello;
+pub mod registry;
 
-use anyhow::Result;
 use async_trait::async_trait;
+use anyhow::Result;
 use std::fmt::Debug;
 
 /// Shared context passed into job execution (for DB, config, etc.)

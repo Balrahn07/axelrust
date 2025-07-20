@@ -4,36 +4,32 @@ mod telemetry;
 mod worker;
 
 use anyhow::Result;
-use jobs::{Job, JobContext, say_hello::SayHelloJob};
+use jobs::JobContext;
+use jobs::registry::JobDispatcher;
 use worker::JobRunner;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenvy::dotenv().ok();
     let cfg = config::load_config()?;
-    // Start logging
     telemetry::init_with_level(&cfg.log_level);
 
     tracing::info!("AxelRust is running 🚀 (env: {})", cfg.environment);
 
-    let job1 = SayHelloJob {
-        message: "This is the first job in AxelRust!".into(),
-    };
-
-    let job2 = SayHelloJob {
-        message: "Another task for the queue!".into(),
-    };
+    // Simulate dispatching jobs by type and payload
+    let job1 = JobDispatcher::dispatch("say_hello", "This is the first job in AxelRust!")?;
+    let job2 = JobDispatcher::dispatch("say_hello", "Another task for the queue!")?;
 
     let jobs = vec![
         (
-            Box::new(job1) as Box<dyn Job>,
+            job1,
             JobContext {
                 job_id: "job-001".into(),
                 attempt: 1,
             },
         ),
         (
-            Box::new(job2) as Box<dyn Job>,
+            job2,
             JobContext {
                 job_id: "job-002".into(),
                 attempt: 1,
