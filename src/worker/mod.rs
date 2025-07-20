@@ -1,6 +1,6 @@
 use crate::jobs::{Job, JobContext};
 use anyhow::Result;
-use tracing::{info, error};
+use tracing::{error, info};
 
 /// In-memory job runner that executes each job in sequence.
 pub struct JobRunner;

@@ -1,4 +1,4 @@
-use tracing_subscriber::{FmtSubscriber, EnvFilter};
+use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 /// Initializes the global subscriber for structured logging.
 /// Log level is controlled via `LOG_LEVEL` environment variable.

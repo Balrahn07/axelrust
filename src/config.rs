@@ -1,6 +1,6 @@
 use anyhow::Result;
-use serde::Deserialize;
 use config::{Config, Environment};
+use serde::Deserialize;
 
 /// Application-wide configuration loaded from environment variables.
 #[derive(Debug, Deserialize)]

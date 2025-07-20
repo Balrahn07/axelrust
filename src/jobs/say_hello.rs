@@ -1,6 +1,6 @@
 use super::{Job, JobContext};
-use async_trait::async_trait;
 use anyhow::Result;
+use async_trait::async_trait;
 use tracing::info;
 
 /// Simple job that prints a hello message with job context.
